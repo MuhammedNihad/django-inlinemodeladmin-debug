@@ -1,22 +1,20 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django_reverse_admin import ReverseModelAdmin
 
 from .models import Retailer
 
 
-class UserInline(admin.StackedInline):
-    model = User
-    fields = ["username", "password1", "password2"]
-    fk_name = "user"
-
-
 @admin.register(Retailer)
-class RetailerAdmin(admin.ModelAdmin):
-    inlines = [UserInline]
+class RetailerAdmin(ReverseModelAdmin):
+    inline_type = "stacked"
+    inline_reverse = [
+        ("user", {"form": UserCreationForm, "fields": ["username", "password1", "password2"]}, ),
+    ]
     fieldsets = (
         (
             None,
-            {"fields": ("user", "phone", "address", "google_map")},
+            {"fields": ("phone", "address", "google_map")},
         ),
     )
     list_display = [
