@@ -6,11 +6,11 @@ from .models import Retailer
 
 
 class CustomReverseInlineModelAdmin(ReverseInlineModelAdmin):
-    """    
+    """
     By overriding ReverseInlineModelAdmin and setting can_delete to False in the formset, the delete
     checkbox is hidden, preventing the deletion of the Retailer object and its parent object in the User
     model when using the UserCreationForm as the form in inline_reverse attribute of RetailerAdmin class.
-   
+
     Otherwise, If an attempt is made to delete the retailer model object by checking the checkbox and
     hitting save button without providing a new password in both the password and password confirmation fields
     (similar to when creating new user, which can be inconvenient in this case), a validation ValueError will
@@ -27,7 +27,13 @@ class CustomReverseInlineModelAdmin(ReverseInlineModelAdmin):
 class RetailerAdmin(ReverseModelAdmin):
     inline_type = "stacked"
     inline_reverse = [
-        ("user", {"form": UserCreationForm, "fields": ["username", "password1", "password2"]}, ),
+        (
+            "user",
+            {
+                "form": UserCreationForm,
+                "fields": ["name", "email", "password1", "password2"],
+            },
+        ),
     ]
     fieldsets = (
         (

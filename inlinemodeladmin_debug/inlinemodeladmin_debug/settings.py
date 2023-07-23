@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #third party apps
     "profiles",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Extend custom user model
+# https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
+
+AUTH_USER_MODEL = "accounts.CustomUser"
