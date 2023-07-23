@@ -23,6 +23,19 @@ class CustomReverseInlineModelAdmin(ReverseInlineModelAdmin):
         return formset
 
 
+class RetailerUserCreationForm(UserCreationForm):
+    """
+    Extends UserCreationForm to set the is_retailer attribute to True in CustomUser model
+    upon saving a new retailer user, effectively identifying them as retailer user type.
+    """
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_retailer = True
+        user.save()
+        return user
+
+
 @admin.register(Retailer)
 class RetailerAdmin(ReverseModelAdmin):
     inline_type = "stacked"
@@ -30,7 +43,7 @@ class RetailerAdmin(ReverseModelAdmin):
         (
             "user",
             {
-                "form": UserCreationForm,
+                "form": RetailerUserCreationForm,
                 "fields": ["name", "email", "password1", "password2"],
             },
         ),
